@@ -10,6 +10,8 @@ from botbuilder.dialogs import (
 from botbuilder.core import MessageFactory
 from botbuilder.schema import ActivityTypes, InputHints
 
+from dialogs.plot_dialog import PlotDialog
+
 
 class MainDialog(ComponentDialog):
     """
@@ -18,6 +20,7 @@ class MainDialog(ComponentDialog):
 
     def __init__(self):
         super().__init__(MainDialog.__name__)
+        self.add_dialog(PlotDialog())
         self.add_dialog(
             WaterfallDialog(WaterfallDialog.__name__, [self.process_activity])
         )
@@ -39,6 +42,8 @@ class MainDialog(ComponentDialog):
             return await self._on_event_activity(step_context)
         if current_activity_type == ActivityTypes.message:
             return await self._on_message_activity(step_context)
+        if current_activity_type == ActivityTypes.conversation_update:
+            return await self._on_conversation_update_activity(step_context)
         else:
             # We didn't get an activity type we can handle.
             await step_context.context.send_activity(
@@ -58,7 +63,22 @@ class MainDialog(ComponentDialog):
         # We didn't get an activity name we can handle.
         await step_context.context.send_activity(
             MessageFactory.text(
-                'Python Dialog',
+                'Python Dialog Event happend',
+                input_hint=InputHints.ignoring_input,
+            )
+        )
+        return DialogTurnResult(DialogTurnStatus.Complete)
+
+    async def _on_conversation_update_activity(
+        self, step_context: WaterfallStepContext
+    ) -> DialogTurnResult:
+        """
+        This method performs different tasks based on the event name.
+        """
+        # We didn't get an activity name we can handle.
+        await step_context.context.send_activity(
+            MessageFactory.text(
+                'Python Dialog Conversation Update happend',
                 input_hint=InputHints.ignoring_input,
             )
         )
@@ -68,10 +88,8 @@ class MainDialog(ComponentDialog):
         self, step_context: WaterfallStepContext
     ) -> DialogTurnResult:
         """
-        This method just gets a message activity and runs it through LUIS.
-        """        
-        await step_context.context.send_activity(
-            MessageFactory.text("some message", input_hint=InputHints.ignoring_input,)
-        )
+        This method just gets a message activity.
+        """
 
-        return DialogTurnResult(DialogTurnStatus.Complete)
+        plot_dialog = await self.find_dialog(PlotDialog.__name__)
+        return await step_context.begin_dialog(plot_dialog.id)
