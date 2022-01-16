@@ -5,19 +5,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import shortuuid
 import os
-import urllib.parse
-import urllib.request
 import base64
-import json
 from datatypes_date_time.timex import Timex
 
 from botbuilder.dialogs import WaterfallDialog, WaterfallStepContext, DialogTurnResult
-from botbuilder.dialogs.prompts import ConfirmPrompt, TextPrompt, PromptOptions
-from botbuilder.core import MessageFactory
 from botbuilder.schema import (
     ActivityTypes,
     Attachment,
-    AttachmentData,
     Activity)
 from .cancel_and_help_dialog import CancelAndHelpDialog
 
