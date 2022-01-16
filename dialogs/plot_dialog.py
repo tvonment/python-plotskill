@@ -6,7 +6,6 @@ import numpy as np
 import shortuuid
 import os
 import base64
-from datatypes_date_time.timex import Timex
 
 from botbuilder.dialogs import WaterfallDialog, WaterfallStepContext, DialogTurnResult
 from botbuilder.schema import (
@@ -89,7 +88,7 @@ class PlotDialog(CancelAndHelpDialog):
             base64_image = base64.b64encode(in_file.read()).decode()
 
         return Attachment(
-            name="architecture-resize.png",
+            name="plot.png",
             content_type="image/png",
             content_url=f"data:image/png;base64,{base64_image}",
         )

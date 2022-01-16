@@ -10,9 +10,9 @@ class DefaultConfig:
 
     PORT = 39783
     APP_ID = os.environ.get(
-        "MicrosoftAppId", "8064ddb7-fdaf-4085-b408-11f1eba2db93")
+        "MicrosoftAppId", "")
     APP_PASSWORD = os.environ.get(
-        "MicrosoftAppPassword", "NZn7Q~8cwogleO22Z~.H1ehomo2HC0yOnB3xM")
+        "MicrosoftAppPassword", "")
     APP_TYPE = os.environ.get("MicrosoftAppType", "MultiTenant")
 
     # Callers to only those specified, '*' allows any caller.
